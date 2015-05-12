@@ -9,6 +9,46 @@ public class Robot {
 	private int speedX = 0;
 	private int speedY = 1;
 	
+	public int getCenterX() {
+		return centerX;
+	}
+
+	public void setCenterX(int centerX) {
+		this.centerX = centerX;
+	}
+
+	public int getCenterY() {
+		return centerY;
+	}
+
+	public void setCenterY(int centerY) {
+		this.centerY = centerY;
+	}
+
+	public boolean isJumped() {
+		return jumped;
+	}
+
+	public void setJumped(boolean jumped) {
+		this.jumped = jumped;
+	}
+
+	public int getSpeedX() {
+		return speedX;
+	}
+
+	public void setSpeedX(int speedX) {
+		this.speedX = speedX;
+	}
+
+	public int getSpeedY() {
+		return speedY;
+	}
+
+	public void setSpeedY(int speedY) {
+		this.speedY = speedY;
+	}
+
 	public void update() {
 		
 		// moves character or scrolls background accordingly
@@ -29,7 +69,7 @@ public class Robot {
 		
 		// updates Y position
 		
-		if( centerY + speedY >- 382 ) {
+		if( centerY + speedY >= 382 ) {
 			centerY = 382;
 		}
 		else {
