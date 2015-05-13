@@ -13,12 +13,17 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	
 	private Robot robot;
 	
+	private Heliboy hb;
+	private Heliboy hb2;
+	
 	private Image image;
 	private Image currentSprite;
 	
 	private Image character;
 	private Image characterDown;
 	private Image characterJumped;
+	
+	private Image heliboy;
 	
 	private Image background;
 	
@@ -68,6 +73,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		characterDown = getImage( base, "data/down.png" );
 		characterJumped = getImage( base, "data/jumped.png" );
 		
+		heliboy = getImage( base, "data/heliboy.png" );
+		
 		currentSprite = character;
 		
 		background = getImage( base, "data/background.png" );
@@ -78,7 +85,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void start() {
 		
 		bg1 = new Background( 0, 0 );
-		bg2 = new Background( 2169, 0 );
+		bg2 = new Background( 2160, 0 );
+		
+		hb = new Heliboy( 340, 360 );
+		hb2 = new Heliboy( 700, 360 );
 		
 		robot = new Robot();
 		
@@ -109,6 +119,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 				
 				currentSprite = character;
 			}
+			
+			hb.update();
+			hb2.update();
 			
 			bg1.update();
 			bg2.update();
@@ -146,6 +159,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		
 		g.drawImage( background, bg1.getBgX(), bg1.getBgY(), this );
 		g.drawImage( background, bg2.getBgX(), bg2.getBgY(), this );
+		
+		g.drawImage( heliboy, hb.getCenterX() - 48, hb.getCenterY() - 48, this );
+		g.drawImage( heliboy, hb2.getCenterX() - 48, hb2.getCenterY() - 48, this );
 		
 		g.drawImage( currentSprite, robot.getCenterX() - 61, robot.getCenterY() - 63, this );
 	}
