@@ -18,7 +18,7 @@ public class Enemy {
 	public void update() {
 
 		centerX += speedX;
-		speedX = bg.getSpeedX();
+		speedX = bg.getSpeedX() * 5;
 	}
 
 	public int getMaxHealth() {
