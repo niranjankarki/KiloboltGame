@@ -7,6 +7,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -34,8 +37,11 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	private Image heliboy4;
 	private Image heliboy5;
 	
+	public static Image tilegrassTop;
+	public static Image tilegrassBot;
+	public static Image tilegrassLeft;
+	public static Image tilegrassRight;
 	public static Image tiledirt;
-	public static Image tileocean;
 	
 	private Image background;
 	
@@ -101,7 +107,10 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		background = getImage( base, "data/background.png" );
 		
 		tiledirt = getImage( base, "data/tiledirt.png" );
-		tileocean = getImage( base, "data/tileocean.png" );
+		tilegrassTop = getImage( base, "data/tilegrasstop.png" );
+		tilegrassBot = getImage( base, "data/tilegrassbot.png" );
+		tilegrassLeft = getImage( base, "data/tilegrassleft.png" );
+		tilegrassRight = getImage( base, "data/tilegrassright.png" );
 		
 		anim = new Animation();
 		anim.addFrame( character, 1250 );
@@ -128,23 +137,11 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		bg2 = new Background( 2160, 0 );
 		
 		// initialise tiles
-		
-		for( int i = 0; i < 200; i++ ) {
-			
-			for( int j = 0; j < 12; j++ ) {
-				
-				if( j == 11 ) {
-					
-					Tile t = new Tile( i, j, 2);
-					tilearray.add( t );
-				}
-				
-				if( j == 10 ) {
-					
-					Tile t = new Tile( i, j, 1 );
-					tilearray.add( t );
-				}
-			}
+		try {
+			loadMap( "data/map1.txt" );
+		}
+		catch ( IOException e ) {
+			e.printStackTrace();
 		}
 		
 		hb = new Heliboy( 340, 360 );
@@ -154,6 +151,53 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		
 		Thread thread = new Thread( this );
 		thread.start();		
+	}
+
+	private void loadMap( String filename ) throws IOException {
+		
+		ArrayList<String> lines = new ArrayList<String>();
+		int width = 0;
+		int height = 0;
+		
+		BufferedReader reader = new BufferedReader( new FileReader( filename ) );
+		
+		while( true ) {
+			
+			String line = reader.readLine();
+			
+			// no more lines to read
+			if( line == null ) {
+				
+				reader.close();
+				break;
+			}
+			
+			if( !line.startsWith( "!" ) ) {
+				
+				lines.add( line );
+				width = Math.max( width, line.length() );
+			}
+		}
+		
+		height = lines.size();
+		
+		for( int j = 0; j < 12; j++ ) {
+			
+			String line = ( String ) lines.get( j );
+			
+			for( int i = 0; i < width; i++ ) {
+				
+				System.out.println( i + "is i " );
+				
+				if( i < line.length() ) {
+					
+					char ch = line.charAt( i );
+					Tile t = new Tile( i, j, Character.getNumericValue( ch ) );
+					
+					tilearray.add( t );
+				}
+			}
+		}
 	}
 
 	@Override
@@ -174,6 +218,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			if( robot.isJumped() ) {
 				
 				currentSprite = characterJumped;
+			}
+			else if( robot.isJumped() == false && robot.isDucked() == true ) {
+				currentSprite = characterDown;
 			}
 			else if( robot.isJumped() == false && robot.isDucked() == false ) {
 				
@@ -290,8 +337,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
             System.out.println("Move up");
             break;
 
-        case KeyEvent.VK_DOWN:
-            currentSprite = anim.getImage();
+        case KeyEvent.VK_DOWN:        	
+        	currentSprite = anim.getImage();
             if (robot.isJumped() == false){
                 robot.setDucked(true);
                 robot.setSpeedX(0);

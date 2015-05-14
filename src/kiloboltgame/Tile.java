@@ -20,11 +20,20 @@ public class Tile {
 		
 		type = typeInt;
 		
-		if( type == 1 ) {
-			tileImage = StartingClass.tileocean;
+		if( type == 5 ) {
+			tileImage = StartingClass.tiledirt;
+		}
+		else if( type == 8 ) {
+			tileImage = StartingClass.tilegrassTop;
+		}
+		else if( type == 4 ) {
+			tileImage = StartingClass.tilegrassLeft;
+		}
+		else if( type == 6 ) {
+			tileImage = StartingClass.tilegrassRight;
 		}
 		else if( type == 2 ) {
-			tileImage = StartingClass.tiledirt;
+			tileImage = StartingClass.tilegrassBot;
 		}
 	}
 	
